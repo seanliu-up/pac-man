@@ -12,8 +12,8 @@ export class UIRenderer {
     this._drawHUD(ctx, state);
 
     switch (state.phase) {
-      case GamePhase.START:       this._drawStart(ctx); break;
-      case GamePhase.PAUSED:      this._drawPaused(ctx); break;
+      case GamePhase.START:       this._drawStart(ctx, state.speedMultiplier); break;
+      case GamePhase.PAUSED:      this._drawPaused(ctx, state.speedMultiplier); break;
       case GamePhase.LIFE_LOST:   this._drawLifeLost(ctx, state); break;
       case GamePhase.LEVEL_COMPLETE: this._drawLevelComplete(ctx, state); break;
       case GamePhase.GAME_OVER:   this._drawGameOver(ctx, state); break;
@@ -21,7 +21,7 @@ export class UIRenderer {
     }
   }
 
-  _drawHUD(ctx, { score, lives, level }) {
+  _drawHUD(ctx, { score, lives, level, speedMultiplier }) {
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, CANVAS_W, TILE_SIZE * 2);
     ctx.fillStyle = '#fff';
@@ -32,6 +32,9 @@ export class UIRenderer {
     ctx.fillText(`LEVEL: ${level}`, CANVAS_W / 2, HUD_Y + 12);
     ctx.textAlign = 'right';
     ctx.fillText(`LIVES: ${lives}`, CANVAS_W - 8, HUD_Y + 12);
+    ctx.font = '10px monospace';
+    ctx.fillStyle = '#aaa';
+    ctx.fillText(`SPD:${speedMultiplier ?? 5}×`, CANVAS_W - 8, HUD_Y + 24);
   }
 
   _drawOverlay(ctx, lines) {
@@ -47,20 +50,40 @@ export class UIRenderer {
     });
   }
 
-  _drawStart(ctx) {
+  _drawSpeedRow(ctx, speedMultiplier, y) {
+    const cx = CANVAS_W / 2;
+    const labels = ['1×', '2×', '3×', '4×', '5×'];
+    const spacing = 40;
+    const startX = cx - (labels.length - 1) * spacing / 2;
+    labels.forEach((label, i) => {
+      const isSelected = (i + 1) === speedMultiplier;
+      ctx.fillStyle = isSelected ? '#ffff00' : '#888';
+      ctx.font = isSelected ? 'bold 14px monospace' : '14px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(label, startX + i * spacing, y);
+    });
+  }
+
+  _drawStart(ctx, speedMultiplier) {
     this._drawOverlay(ctx, [
       { text: 'PAC-MAN', color: '#ffff00', font: 'bold 22px monospace' },
       { text: 'Arrow keys / WASD to move' },
       { text: 'Eat all the dots! Avoid the ghosts.' },
+      { text: 'Speed: press 1–5 to change', color: '#aaa', font: '13px monospace' },
       { text: 'Press ENTER or any arrow key to start', color: '#aaa', font: '13px monospace' },
     ]);
+    const cy = (31 / 2 + 2) * TILE_SIZE;
+    this._drawSpeedRow(ctx, speedMultiplier, cy + 100);
   }
 
-  _drawPaused(ctx) {
+  _drawPaused(ctx, speedMultiplier) {
     this._drawOverlay(ctx, [
       { text: 'PAUSED', color: '#ffff00', font: 'bold 20px monospace' },
+      { text: 'Speed: press 1–5 to change', color: '#aaa', font: '13px monospace' },
       { text: 'Press P to Resume' },
     ]);
+    const cy = (31 / 2 + 2) * TILE_SIZE;
+    this._drawSpeedRow(ctx, speedMultiplier, cy + 52);
   }
 
   _drawLifeLost(ctx, { lives }) {

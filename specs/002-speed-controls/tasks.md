@@ -18,7 +18,7 @@
 
 **Purpose**: Establish a clean baseline before any changes
 
-- [ ] T001 Run `npm test` and confirm all existing tests pass as the pre-feature baseline
+- [X] T001 Run `npm test` and confirm all existing tests pass as the pre-feature baseline
 
 ---
 
@@ -28,10 +28,10 @@
 
 **⚠️ CRITICAL**: No user story implementation begins until this phase is complete
 
-- [ ] T002 Write failing unit tests for `_getSettings()` parse/error return value and `saveMuteSetting()` merge-not-overwrite behavior in `tests/unit/storage.test.js`
-- [ ] T003 Add `_getSettings()` private helper to `src/storage/storage.js` and fix `saveMuteSetting()` to merge `{ muted }` into existing settings rather than overwrite (makes T002 pass)
-- [ ] T004 Write failing unit test confirming `createGameState()` default `speedMultiplier` is `5` and that a passed value overrides the default in `tests/unit/game-state.test.js`
-- [ ] T005 Add `speedMultiplier = 5` optional parameter to `createGameState()` and include `speedMultiplier` in the returned state object in `src/game/state/game-state.js` (makes T004 pass)
+- [X] T002 Write failing unit tests for `_getSettings()` parse/error return value and `saveMuteSetting()` merge-not-overwrite behavior in `tests/unit/storage.test.js`
+- [X] T003 Add `_getSettings()` private helper to `src/storage/storage.js` and fix `saveMuteSetting()` to merge `{ muted }` into existing settings rather than overwrite (makes T002 pass)
+- [X] T004 Write failing unit test confirming `createGameState()` default `speedMultiplier` is `5` and that a passed value overrides the default in `tests/unit/game-state.test.js`
+- [X] T005 Add `speedMultiplier = 5` optional parameter to `createGameState()` and include `speedMultiplier` in the returned state object in `src/game/state/game-state.js` (makes T004 pass)
 
 **Checkpoint**: StorageAdapter merge is safe; `GameState` carries `speedMultiplier`. User story work can begin.
 
@@ -45,18 +45,18 @@
 
 ### Tests for User Story 1 (TDD — write and confirm FAIL before implementing)
 
-- [ ] T006 [P] [US1] Write failing unit tests for `tickEntity`/`tickPacMan` multiplier scaling (multiplier=1 baseline, multiplier=5 distance, level-stack at multiplier=2, undefined state fallback to ×1) in `tests/unit/movement.test.js`
-- [ ] T007 [P] [US1] Write failing unit tests for InputManager speed keys `1`–`5` setting `getSpeedSelection()`, direction keys not affecting `_speedSelection`, and `clearSpeedSelection()` resetting to null in `tests/unit/input-manager.test.js`
-- [ ] T008 [P] [US1] Create `tests/integration/speed-controls.test.js` with failing US1 scenarios: START phase selects 1×/5×, PLAYING phase ignores speed keys, default `speedMultiplier` is 5
+- [X] T006 [P] [US1] Write failing unit tests for `tickEntity`/`tickPacMan` multiplier scaling (multiplier=1 baseline, multiplier=5 distance, level-stack at multiplier=2, undefined state fallback to ×1) in `tests/unit/movement.test.js`
+- [X] T007 [P] [US1] Write failing unit tests for InputManager speed keys `1`–`5` setting `getSpeedSelection()`, direction keys not affecting `_speedSelection`, and `clearSpeedSelection()` resetting to null in `tests/unit/input-manager.test.js`
+- [X] T008 [P] [US1] Create `tests/integration/speed-controls.test.js` with failing US1 scenarios: START phase selects 1×/5×, PLAYING phase ignores speed keys, default `speedMultiplier` is 5
 
 ### Implementation for User Story 1
 
-- [ ] T009 [P] [US1] Apply `* (state.speedMultiplier ?? 1)` in both `tickEntity` and `tickPacMan` distance calculations in `src/game/systems/movement.js` (makes T006 pass)
-- [ ] T010 [P] [US1] Add `_speedSelection = null` field, keys `1`–`5` handler (`parseInt(e.key, 10)` sets it), `getSpeedSelection()`, and `clearSpeedSelection()` to `src/input/input-manager.js` (makes T007 pass)
-- [ ] T011 [P] [US1] Add `_drawSpeedRow(ctx, speedMultiplier, y)` helper that renders labels `1×`–`5×` horizontally with selected preset in yellow `#ffff00` `bold 14px monospace` and others in grey `#888` `14px monospace` in `src/rendering/ui-renderer.js`
-- [ ] T012 [US1] Add `_handleSpeedInput(state, input, storage)` private function (reads `getSpeedSelection`, updates `state.speedMultiplier`, calls `storage?.saveSpeedSetting?.(sel)`, calls `clearSpeedSelection`) and invoke it at the top of the `START` phase case block in `src/game/state/tick.js`
-- [ ] T013 [US1] Update `_drawHUD()` to destructure `speedMultiplier` from state and render `SPD:N×` (right-aligned, 10px monospace, `#aaa`) and update `_drawStart(ctx, speedMultiplier)` to add a speed instruction line and call `_drawSpeedRow` in `src/rendering/ui-renderer.js`
-- [ ] T014 [US1] Update `draw(ctx, state)` to pass `state.speedMultiplier` to `_drawStart` and verify `_drawHUD` receives the full state object in `src/rendering/ui-renderer.js`
+- [X] T009 [P] [US1] Apply `* (state.speedMultiplier ?? 1)` in both `tickEntity` and `tickPacMan` distance calculations in `src/game/systems/movement.js` (makes T006 pass)
+- [X] T010 [P] [US1] Add `_speedSelection = null` field, keys `1`–`5` handler (`parseInt(e.key, 10)` sets it), `getSpeedSelection()`, and `clearSpeedSelection()` to `src/input/input-manager.js` (makes T007 pass)
+- [X] T011 [P] [US1] Add `_drawSpeedRow(ctx, speedMultiplier, y)` helper that renders labels `1×`–`5×` horizontally with selected preset in yellow `#ffff00` `bold 14px monospace` and others in grey `#888` `14px monospace` in `src/rendering/ui-renderer.js`
+- [X] T012 [US1] Add `_handleSpeedInput(state, input, storage)` private function (reads `getSpeedSelection`, updates `state.speedMultiplier`, calls `storage?.saveSpeedSetting?.(sel)`, calls `clearSpeedSelection`) and invoke it at the top of the `START` phase case block in `src/game/state/tick.js`
+- [X] T013 [US1] Update `_drawHUD()` to destructure `speedMultiplier` from state and render `SPD:N×` (right-aligned, 10px monospace, `#aaa`) and update `_drawStart(ctx, speedMultiplier)` to add a speed instruction line and call `_drawSpeedRow` in `src/rendering/ui-renderer.js`
+- [X] T014 [US1] Update `draw(ctx, state)` to pass `state.speedMultiplier` to `_drawStart` and verify `_drawHUD` receives the full state object in `src/rendering/ui-renderer.js`
 
 **Checkpoint**: US1 fully functional — start screen shows 5-preset speed selector, keys 1–5 change multiplier, all entities obey multiplier, HUD shows active speed.
 
@@ -70,12 +70,12 @@
 
 ### Tests for User Story 2
 
-- [ ] T015 [US2] Add failing integration tests for US2 scenarios to `tests/integration/speed-controls.test.js`: PAUSED phase accepts speed keys and updates `state.speedMultiplier`, PLAYING phase ignores speed keys (US2-AC3 guard)
+- [X] T015 [US2] Add failing integration tests for US2 scenarios to `tests/integration/speed-controls.test.js`: PAUSED phase accepts speed keys and updates `state.speedMultiplier`, PLAYING phase ignores speed keys (US2-AC3 guard)
 
 ### Implementation for User Story 2
 
-- [ ] T016 [P] [US2] Call `_handleSpeedInput()` at the top of the `PAUSED` phase case block in `src/game/state/tick.js`
-- [ ] T017 [P] [US2] Update `_drawPaused(ctx, speedMultiplier)` to accept `speedMultiplier` and call `_drawSpeedRow`, then update `draw()` to pass `state.speedMultiplier` in the `PAUSED` case in `src/rendering/ui-renderer.js`
+- [X] T016 [P] [US2] Call `_handleSpeedInput()` at the top of the `PAUSED` phase case block in `src/game/state/tick.js`
+- [X] T017 [P] [US2] Update `_drawPaused(ctx, speedMultiplier)` to accept `speedMultiplier` and call `_drawSpeedRow`, then update `draw()` to pass `state.speedMultiplier` in the `PAUSED` case in `src/rendering/ui-renderer.js`
 
 **Checkpoint**: US2 fully functional — pause menu shows speed selector, changing speed while paused takes effect immediately on resume; PLAYING phase blocks speed changes.
 
@@ -89,13 +89,13 @@
 
 ### Tests for User Story 3
 
-- [ ] T018 [P] [US3] Write failing unit tests for `getSpeedSetting()` (no pref → 5, valid values 1–5, out-of-range value → 5, corrupt JSON → 5) and `saveSpeedSetting(3)` not overwriting existing `muted:true` in `tests/unit/storage.test.js`
-- [ ] T019 [P] [US3] Add failing integration tests for US3 scenarios to `tests/integration/speed-controls.test.js`: saved preference 3× is restored on load, fresh-install default is 5×, corrupt storage falls back to 5×
+- [X] T018 [P] [US3] Write failing unit tests for `getSpeedSetting()` (no pref → 5, valid values 1–5, out-of-range value → 5, corrupt JSON → 5) and `saveSpeedSetting(3)` not overwriting existing `muted:true` in `tests/unit/storage.test.js`
+- [X] T019 [P] [US3] Add failing integration tests for US3 scenarios to `tests/integration/speed-controls.test.js`: saved preference 3× is restored on load, fresh-install default is 5×, corrupt storage falls back to 5×
 
 ### Implementation for User Story 3
 
-- [ ] T020 [US3] Add `getSpeedSetting()` (reads `_getSettings().speedMultiplier`, validates integer 1–5, returns 5 on any failure) and `saveSpeedSetting(multiplier)` (merge-writes `{ speedMultiplier }` via `_getSettings()`) to `src/storage/storage.js` (makes T018 pass)
-- [ ] T021 [US3] Call `storage.getSpeedSetting()` to obtain `initialSpeedMultiplier` and pass it to `createGameState(initialSpeedMultiplier)` in `src/main.js` (makes T019 pass)
+- [X] T020 [US3] Add `getSpeedSetting()` (reads `_getSettings().speedMultiplier`, validates integer 1–5, returns 5 on any failure) and `saveSpeedSetting(multiplier)` (merge-writes `{ speedMultiplier }` via `_getSettings()`) to `src/storage/storage.js` (makes T018 pass)
+- [X] T021 [US3] Call `storage.getSpeedSetting()` to obtain `initialSpeedMultiplier` and pass it to `createGameState(initialSpeedMultiplier)` in `src/main.js` (makes T019 pass)
 
 **Checkpoint**: US3 fully functional — speed preference persists across browser sessions; falls back to 5× on first visit or corrupted data.
 
@@ -103,9 +103,9 @@
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T022 Run `npm test` and confirm all new and existing tests pass with ≥80% coverage on `src/game/**`
+- [X] T022 Run `npm test` and confirm all new and existing tests pass with ≥80% coverage on `src/game/**`
 - [ ] T023 Manual browser verification per quickstart.md steps 1–9: `npm run dev`, verify start-screen selector default 5×, test presets 1×/2×/5×, HUD label, pause-menu selector, speed change takes effect on resume, persistence across tab close/reopen, level-transition speed scaling
-- [ ] T024 [P] Run `npm run test:e2e` to confirm ≥60fps frame rate is maintained at all 5 speed presets
+- [X] T024 [P] Run `npm run test:e2e` to confirm ≥60fps frame rate is maintained at all 5 speed presets
 
 ---
 

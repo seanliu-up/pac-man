@@ -98,3 +98,71 @@ describe('T045 — StorageAdapter unit tests', () => {
     expect(adapter.getHighScores()[0].name).toBe('ABC');
   });
 });
+
+describe('T002 — _getSettings helper and saveMuteSetting merge', () => {
+  test('_getSettings returns empty object when nothing stored', () => {
+    const adapter = new StorageAdapter(makeStore());
+    expect(adapter._getSettings()).toEqual({});
+  });
+
+  test('_getSettings returns empty object on corrupt JSON', () => {
+    const store = makeStore({ 'pacman.settings': 'not-json{{' });
+    const adapter = new StorageAdapter(store);
+    expect(adapter._getSettings()).toEqual({});
+  });
+
+  test('_getSettings returns parsed settings when stored', () => {
+    const store = makeStore({ 'pacman.settings': JSON.stringify({ muted: true }) });
+    const adapter = new StorageAdapter(store);
+    expect(adapter._getSettings()).toEqual({ muted: true });
+  });
+
+  test('saveMuteSetting merges without overwriting other settings fields', () => {
+    const store = makeStore({ 'pacman.settings': JSON.stringify({ speedMultiplier: 3 }) });
+    const adapter = new StorageAdapter(store);
+    adapter.saveMuteSetting(true);
+    const saved = JSON.parse(store.getItem('pacman.settings'));
+    expect(saved.muted).toBe(true);
+    expect(saved.speedMultiplier).toBe(3);
+  });
+});
+
+describe('T018 — getSpeedSetting and saveSpeedSetting', () => {
+  test('getSpeedSetting returns 5 when no preference stored', () => {
+    const adapter = new StorageAdapter(makeStore());
+    expect(adapter.getSpeedSetting()).toBe(5);
+  });
+
+  test('getSpeedSetting returns saved value for valid 1–5', () => {
+    const store = makeStore({ 'pacman.settings': JSON.stringify({ speedMultiplier: 3 }) });
+    const adapter = new StorageAdapter(store);
+    expect(adapter.getSpeedSetting()).toBe(3);
+  });
+
+  test('getSpeedSetting returns 5 for out-of-range value 6', () => {
+    const store = makeStore({ 'pacman.settings': JSON.stringify({ speedMultiplier: 6 }) });
+    const adapter = new StorageAdapter(store);
+    expect(adapter.getSpeedSetting()).toBe(5);
+  });
+
+  test('getSpeedSetting returns 5 for out-of-range value 0', () => {
+    const store = makeStore({ 'pacman.settings': JSON.stringify({ speedMultiplier: 0 }) });
+    const adapter = new StorageAdapter(store);
+    expect(adapter.getSpeedSetting()).toBe(5);
+  });
+
+  test('getSpeedSetting returns 5 on corrupt JSON', () => {
+    const store = makeStore({ 'pacman.settings': 'corrupt-json' });
+    const adapter = new StorageAdapter(store);
+    expect(adapter.getSpeedSetting()).toBe(5);
+  });
+
+  test('saveSpeedSetting(3) does not overwrite existing muted:true', () => {
+    const store = makeStore({ 'pacman.settings': JSON.stringify({ muted: true }) });
+    const adapter = new StorageAdapter(store);
+    adapter.saveSpeedSetting(3);
+    const saved = JSON.parse(store.getItem('pacman.settings'));
+    expect(saved.muted).toBe(true);
+    expect(saved.speedMultiplier).toBe(3);
+  });
+});

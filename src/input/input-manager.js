@@ -10,11 +10,13 @@ const KEY_MAP = {
 const ARROW_KEYS = new Set(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']);
 const PAUSE_KEYS = new Set(['p', 'P', 'Escape']);
 const MUTE_KEYS  = new Set(['m', 'M']);
+const SPEED_KEYS = new Set(['1', '2', '3', '4', '5']);
 
 export class InputManager {
   constructor(onMuteToggle) {
     this._pendingDirection = null;
     this._pausePressed = false;
+    this._speedSelection = null;
     this._onMuteToggle = onMuteToggle || null;
     this._touchStart = null;
     this._onKeyDown = this._onKeyDown.bind(this);
@@ -38,6 +40,8 @@ export class InputManager {
   clearPendingDirection() { this._pendingDirection = null; }
   isPausePressed() { return this._pausePressed; }
   clearPause() { this._pausePressed = false; }
+  getSpeedSelection() { return this._speedSelection; }
+  clearSpeedSelection() { this._speedSelection = null; }
 
   _onKeyDown(e) {
     if (ARROW_KEYS.has(e.key)) e.preventDefault();
@@ -45,6 +49,10 @@ export class InputManager {
     const dir = KEY_MAP[e.key];
     if (dir) {
       this._pendingDirection = dir;
+      return;
+    }
+    if (SPEED_KEYS.has(e.key)) {
+      this._speedSelection = parseInt(e.key, 10);
       return;
     }
     if (PAUSE_KEYS.has(e.key)) {

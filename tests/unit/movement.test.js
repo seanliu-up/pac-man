@@ -81,3 +81,42 @@ describe('ghost movement', () => {
     expect(ghost.tileX).toBeGreaterThan(6);
   });
 });
+
+describe('movement system — speed multiplier (T006)', () => {
+  const move = createMovementSystem();
+
+  test('tickEntity multiplier=1 baseline: distance equals speed*dt', () => {
+    const state = { maze: createMaze(), speedMultiplier: 1 };
+    const ghost = { tileX: 6, tileY: 1, direction: Direction.RIGHT, speed: 0.75, pixelX: 0, pixelY: 0 };
+    move.tickEntity(state, ghost, 0.1);
+    // 0.75 * 0.1 * 1 = 0.075 — no tile crossing, stays in pixelX
+    expect(ghost.pixelX).toBeCloseTo(0.075);
+  });
+
+  test('tickEntity multiplier=5: pixelX is 5× the baseline', () => {
+    const state = { maze: createMaze(), speedMultiplier: 5 };
+    const ghost = { tileX: 6, tileY: 1, direction: Direction.RIGHT, speed: 0.75, pixelX: 0, pixelY: 0 };
+    move.tickEntity(state, ghost, 0.1);
+    // 0.75 * 0.1 * 5 = 0.375 — no tile crossing
+    expect(ghost.pixelX).toBeCloseTo(0.375);
+  });
+
+  test('tickPacMan multiplier=2 stacks with per-level entity speed (level-stack)', () => {
+    const maze = createMaze();
+    const pacman = createPacMan();
+    pacman.speed = 1.0; // simulate level-adjusted speed
+    pacman.direction = Direction.RIGHT;
+    const state = { maze, pacman, speedMultiplier: 2 };
+    move.tickPacMan(state, 0.1);
+    // 1.0 * 0.1 * 2 = 0.2 — no tile crossing
+    expect(pacman.pixelX).toBeCloseTo(0.2);
+  });
+
+  test('tickEntity with undefined speedMultiplier falls back to ×1', () => {
+    const state = { maze: createMaze() }; // no speedMultiplier field
+    const ghost = { tileX: 6, tileY: 1, direction: Direction.RIGHT, speed: 0.75, pixelX: 0, pixelY: 0 };
+    move.tickEntity(state, ghost, 0.1);
+    // fallback to 1: 0.75 * 0.1 * 1 = 0.075
+    expect(ghost.pixelX).toBeCloseTo(0.075);
+  });
+});

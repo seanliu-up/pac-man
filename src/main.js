@@ -22,11 +22,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const storage    = new StorageAdapter();
   const initialMuted = storage.getMuteSetting();
+  const initialSpeedMultiplier = storage.getSpeedSetting();
   const audio      = new AudioManager({ initialMuted, onMuteToggle: (m) => storage.saveMuteSetting(m) });
   const input      = new InputManager();
   input.init();
 
-  const gameState  = createGameState();
+  const gameState  = createGameState(initialSpeedMultiplier);
   const renderer   = new Renderer(canvas);
   renderer.init(
     new MazeRenderer(),

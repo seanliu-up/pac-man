@@ -39,17 +39,38 @@ export class StorageAdapter {
     return list.length < 10 || score > (list[9]?.score ?? 0);
   }
 
-  getMuteSetting() {
+  _getSettings() {
     try {
       const raw = this._store.getItem(SET_KEY);
-      if (!raw) return false;
-      return !!JSON.parse(raw).muted;
-    } catch { return false; }
+      if (!raw) return {};
+      const parsed = JSON.parse(raw);
+      return (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) ? parsed : {};
+    } catch {
+      return {};
+    }
+  }
+
+  getMuteSetting() {
+    return !!this._getSettings().muted;
   }
 
   saveMuteSetting(muted) {
     try {
-      this._store.setItem(SET_KEY, JSON.stringify({ muted: !!muted }));
+      const settings = this._getSettings();
+      this._store.setItem(SET_KEY, JSON.stringify({ ...settings, muted: !!muted }));
+    } catch {} // storage unavailable
+  }
+
+  getSpeedSetting() {
+    const val = this._getSettings().speedMultiplier;
+    const n = parseInt(val, 10);
+    return (Number.isInteger(n) && n >= 1 && n <= 5) ? n : 5;
+  }
+
+  saveSpeedSetting(multiplier) {
+    try {
+      const settings = this._getSettings();
+      this._store.setItem(SET_KEY, JSON.stringify({ ...settings, speedMultiplier: multiplier }));
     } catch {} // storage unavailable
   }
 }

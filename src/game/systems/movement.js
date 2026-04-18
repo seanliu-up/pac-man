@@ -21,7 +21,7 @@ export function createMovementSystem() {
       if (entity.direction === Direction.NONE) return;
       const { tiles } = state.maze;
       const speed = entity.speed; // tiles per second
-      const distance = speed * dt;
+      const distance = speed * dt * (state.speedMultiplier ?? 1);
       const { dx, dy } = dirDelta(entity.direction);
 
       entity.pixelX += dx * distance;
@@ -50,7 +50,7 @@ export function createMovementSystem() {
     tickPacMan(state, dt) {
       const { pacman, maze: { tiles } } = state;
       const speed = pacman.speed;
-      const distance = speed * dt;
+      const distance = speed * dt * (state.speedMultiplier ?? 1);
 
       // Try to apply pendingDirection at tile center (pixelX≈0, pixelY≈0)
       if (pacman.pendingDirection && pacman.pendingDirection !== pacman.direction) {

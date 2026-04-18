@@ -13,6 +13,7 @@ const LEVEL_COMPLETE_DELAY = 3;
 export function tickGame(state, dt, input, audio, storage, opts = {}) {
   switch (state.phase) {
     case GamePhase.START:
+      _handleSpeedInput(state, input, storage);
       if (opts.startPressed || _hasPendingDirection(input)) {
         state.phase = GamePhase.PLAYING;
         audio?.play('game-start');
@@ -20,6 +21,7 @@ export function tickGame(state, dt, input, audio, storage, opts = {}) {
       return;
 
     case GamePhase.PAUSED:
+      _handleSpeedInput(state, input, storage);
       if (input.isPausePressed()) {
         input.clearPause();
         state.phase = GamePhase.PLAYING;
@@ -127,6 +129,14 @@ export function tickGame(state, dt, input, audio, storage, opts = {}) {
 
 // Alias used in integration tests
 export { tickGame as tick };
+
+function _handleSpeedInput(state, input, storage) {
+  const sel = input.getSpeedSelection?.();
+  if (sel == null) return;
+  state.speedMultiplier = sel;
+  storage?.saveSpeedSetting?.(sel);
+  input.clearSpeedSelection?.();
+}
 
 function _hasPendingDirection(input) {
   return !!input.getPendingDirection?.();
