@@ -89,3 +89,10 @@ npm run lint          # ESLint check
 - **V. Performance**: 60fps target, ≤16ms frame time, ≤33ms input latency, object pooling
 
 Read `.specify/memory/constitution.md` for the complete governance model.
+
+<!-- SPECKIT START -->
+## Active Implementation Plan
+
+Current feature: **002-speed-controls**  
+Plan: `specs/002-speed-controls/plan.md`
+<!-- SPECKIT END -->
