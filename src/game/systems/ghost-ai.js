@@ -132,7 +132,7 @@ const RELEASE_THRESHOLDS = {
 const GHOST_HOUSE_EXIT_TILE = { x: 14, y: 11 };
 const GHOST_HOUSE_ENTRY_TILE = { x: 14, y: 14 };
 
-export function tickGhostAI(state, ghost, dt) {
+export function tickGhostAI(state, ghost, _dt) {
   const { tiles } = state.maze;
   const dotsEaten = state.maze.dots.filter(d => d.collected).length;
 

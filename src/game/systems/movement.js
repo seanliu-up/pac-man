@@ -1,4 +1,4 @@
-import { Direction, TileType, MAZE_COLS } from '../constants.js';
+import { Direction, MAZE_COLS } from '../constants.js';
 import { isWalkableForPacman, isWalkable } from '../entities/maze.js';
 
 function dirDelta(dir) {

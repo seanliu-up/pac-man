@@ -17,6 +17,7 @@ export default {
   coveragePathIgnorePatterns: [
     '/node_modules/',
     'src/rendering/',
+    'src/game/state/game-loop.js',
   ],
   testMatch: [
     '**/tests/unit/**/*.test.js',

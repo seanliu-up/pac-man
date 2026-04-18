@@ -1,7 +1,7 @@
 import { GamePhase, GhostMode, Direction } from '../constants.js';
 import { createMovementSystem } from '../systems/movement.js';
 import { checkDotCollision, checkPelletCollision, checkGhostCollision } from '../systems/collision.js';
-import { awardDot, awardPellet, awardGhostEat, checkBonusLife } from '../systems/scoring.js';
+import { checkBonusLife } from '../systems/scoring.js';
 import { tickGhostAI, tickFrightenedTimer } from '../systems/ghost-ai.js';
 import { checkLevelComplete, resetLevel, getFrightenedDuration } from '../systems/level.js';
 

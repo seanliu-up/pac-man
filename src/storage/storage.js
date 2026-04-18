@@ -31,7 +31,7 @@ export class StorageAdapter {
       list.push({ name, score, date });
       list.sort((a, b) => b.score - a.score);
       this._store.setItem(HS_KEY, JSON.stringify(list.slice(0, 10)));
-    } catch {}
+    } catch {} // storage unavailable
   }
 
   qualifiesForHighScore(score) {
@@ -50,7 +50,7 @@ export class StorageAdapter {
   saveMuteSetting(muted) {
     try {
       this._store.setItem(SET_KEY, JSON.stringify({ muted: !!muted }));
-    } catch {}
+    } catch {} // storage unavailable
   }
 }
 
