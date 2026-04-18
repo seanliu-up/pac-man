@@ -1,0 +1,6 @@
+catalogs:
+  - name: "community-catalog"
+    url: "https://raw.githubusercontent.com/github/spec-kit/c118c1c30f961921e41891df3318a2ccd2ceea54/extensions/catalog.community.json"
+    priority: 1
+    install_allowed: true
+    description: "Extensions contributed by the community, not vetted by us"
