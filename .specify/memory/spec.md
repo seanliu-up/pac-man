@@ -1,6 +1,6 @@
 # Main Project Specification
 
-**Last Updated**: 2026-04-18 | **Version**: 1.1.0
+**Last Updated**: 2026-04-18 | **Version**: 1.2.0
 
 ## User Scenarios & Integration Scenarios
 
@@ -50,6 +50,21 @@ A player who clears all dots in the current level advances to the next level wit
 1. All dots cleared → level-complete animation plays, level counter increments, maze resets with all dots restored
 2. Player on level 2+ → ghosts move noticeably faster than on level 1
 3. Power pellet eaten on level 3+ → frightened duration is shorter than on level 1
+
+---
+
+### US-008: Pac-Man Faces Movement Direction (Priority: P3)
+**Branch**: `003-pacman-facing-direction` [Source: specs/tiny/pacman-facing-direction.md]
+
+Pac-Man's mouth gap always faces the direction it is currently moving, giving players clear visual feedback about the character's orientation.
+
+**Acceptance Criteria**:
+1. Pac-Man moves RIGHT → mouth gap faces right
+2. Pac-Man moves LEFT → mouth gap faces left
+3. Pac-Man moves UP → mouth gap faces up
+4. Pac-Man moves DOWN → mouth gap faces down
+5. Pac-Man has no direction (stationary, before first input) → mouth gap faces right by default
+6. Mouth open/close animation continues unchanged regardless of direction
 
 ---
 
@@ -116,13 +131,16 @@ A player who previously set their preferred speed returns to the game another da
 - **FR-022**: The player's chosen speed preference MUST be persisted and automatically restored in subsequent sessions [Source: specs/002-speed-controls]
 - **FR-023**: If the stored speed preference cannot be read, the game MUST silently fall back to the 5× default without displaying an error [Source: specs/002-speed-controls]
 - **FR-024**: The speed multiplier MUST scale proportionally with the per-level speed progression (the level system's relative increases are preserved on top of the global multiplier) [Source: specs/002-speed-controls]
+- **FR-025**: Pac-Man's sprite MUST visually face the direction it is currently moving — the mouth gap rotates to match UP, DOWN, LEFT, and RIGHT [Source: specs/tiny/pacman-facing-direction.md]
+- **FR-026**: When Pac-Man has no current direction (NONE, before the player's first input), the mouth gap MUST face right by default [Source: specs/tiny/pacman-facing-direction.md]
+- **FR-027**: The mouth open/close animation MUST continue unaffected by the active movement direction [Source: specs/tiny/pacman-facing-direction.md]
 
 ---
 
 ## Key Entities
 
 - **Player**: Session state with score, remaining lives (starts with 3), and current level
-- **Pac-Man**: Player-controlled character with position, direction, and speed
+- **Pac-Man**: Player-controlled character with position, direction, and speed; sprite faces the current direction of movement (rotated at draw time)
 - **Ghost**: AI-controlled adversary with position, direction, behavior mode (scatter/chase/frightened/eaten), speed, scatter-chase cycle timer; each ghost has distinct chase targeting strategy
 - **Dot**: Collectible item in maze worth 10 points; has position and collected/uncollected state
 - **Power Pellet**: Special collectible that temporarily makes ghosts vulnerable; has position and collected state
@@ -141,6 +159,7 @@ A player who previously set their preferred speed returns to the game another da
 - **SC-010**: A player's speed preference survives 100% of browser/tab close-and-reopen cycles on the same device [Source: specs/002-speed-controls]
 - **SC-011**: All moving entities respond proportionally to speed changes — at any preset, no entity moves faster or slower relative to others than it would at 1× [Source: specs/002-speed-controls]
 - **SC-012**: The game maintains its target frame rate at all 5 speed presets with no observable stuttering [Source: specs/002-speed-controls]
+- **SC-013**: Pac-Man's sprite orientation matches its movement direction for all 4 directions with no perceptible delay — the rotation is applied within the same frame as the direction change [Source: specs/tiny/pacman-facing-direction.md]
 
 ---
 
@@ -165,6 +184,7 @@ A player who previously set their preferred speed returns to the game another da
 - Level transition occurs while game is running at 5× → speed scaling carries through level transitions correctly, adjusting per-level base values proportionally [Source: specs/002-speed-controls]
 - Speed setting changed after high scores already exist → existing high scores are unaffected; speed setting does not alter the scoring system [Source: specs/002-speed-controls]
 - Frightened ghost speed at high multipliers → frightened ghost speed scales by the same multiplier as all other entities; uniform scaling applies to all movement states including frightened mode [Source: specs/002-speed-controls]
+- Pac-Man direction is NONE at game start → sprite faces right (default orientation) until first directional input [Source: specs/tiny/pacman-facing-direction.md]
 
 ---
 

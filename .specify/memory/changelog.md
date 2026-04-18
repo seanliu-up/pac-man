@@ -1,5 +1,23 @@
 # Merged Features Log
 
+## 003-pacman-facing-direction — 2026-04-18
+
+**Branch**: `003-pacman-facing-direction`
+**Spec**: `specs/tiny/pacman-facing-direction.md` (tinyspec)
+**Status**: done | **Tasks**: 3/5 completed (2 manual browser tests pending)
+
+### What was added
+
+- **Directional sprite rotation**: Pac-Man's mouth gap now faces the direction of movement (UP/DOWN/LEFT/RIGHT); defaults to right when stationary
+
+### Modified Files
+
+- `src/rendering/entity-renderer.js` — added `DIRECTION_ANGLE` lookup map; wrapped Pac-Man draw call in `ctx.save()` / `ctx.translate()` / `ctx.rotate()` / `ctx.restore()`
+
+### Tasks Completed: 3/5
+
+---
+
 ## 002-speed-controls — 2026-04-18
 
 **Branch**: `002-speed-controls`

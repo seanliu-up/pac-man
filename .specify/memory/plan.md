@@ -1,6 +1,6 @@
 # Main Implementation Plan
 
-**Last Updated**: 2026-04-18 | **Version**: 1.1.0
+**Last Updated**: 2026-04-18 | **Version**: 1.2.0
 
 ## Project Overview
 
@@ -67,7 +67,7 @@ src/
 ├── rendering/
 │   ├── renderer.js          # Canvas rendering coordinator
 │   ├── maze-renderer.js     # Tile and maze drawing
-│   ├── entity-renderer.js   # Pac-Man, ghost, dot, pellet sprites
+│   ├── entity-renderer.js   # Pac-Man, ghost, dot, pellet sprites; DIRECTION_ANGLE rotation map [Source: specs/tiny/pacman-facing-direction.md]
 │   └── ui-renderer.js       # Score, lives, level HUD; start/pause/game-over screens
 ├── input/
 │   └── input-manager.js     # Keyboard + touch/swipe → directional commands + pause
@@ -221,3 +221,4 @@ Output: Single `dist/index.html` + bundled `dist/assets/*.js` and `dist/assets/*
 |------|---------|---------|
 | 2026-04-18 | 1.0.0 | Initial implementation plan merged to master |
 | 2026-04-18 | 1.1.0 | Archived 002-speed-controls: project structure, testing strategy, known issues, next steps updated |
+| 2026-04-18 | 1.2.0 | Archived 003-pacman-facing-direction: entity-renderer.js noted in project structure |

@@ -3,6 +3,8 @@ import { GhostId, GhostMode, TILE_SIZE } from '../game/constants.js';
 const HUD_ROWS = 2;
 const HALF = TILE_SIZE / 2;
 
+const DIRECTION_ANGLE = { RIGHT: 0, LEFT: Math.PI, UP: -Math.PI / 2, DOWN: Math.PI / 2, NONE: 0 };
+
 const GHOST_COLORS = {
   [GhostId.BLINKY]: '#ff0000',
   [GhostId.PINKY]:  '#ffb8ff',
@@ -35,12 +37,16 @@ export class EntityRenderer {
     const px = pacman.tileX * TILE_SIZE + HALF + pacman.pixelX * TILE_SIZE;
     const py = (pacman.tileY + HUD_ROWS) * TILE_SIZE + HALF + pacman.pixelY * TILE_SIZE;
     const mouth = (Math.sin(this._frame * 0.3) + 1) * 0.25; // 0–0.5 radians
+    ctx.save();
+    ctx.translate(px, py);
+    ctx.rotate(DIRECTION_ANGLE[pacman.direction] ?? 0);
     ctx.fillStyle = '#ffff00';
     ctx.beginPath();
-    ctx.moveTo(px, py);
-    ctx.arc(px, py, HALF - 1, mouth, Math.PI * 2 - mouth);
+    ctx.moveTo(0, 0);
+    ctx.arc(0, 0, HALF - 1, mouth, Math.PI * 2 - mouth);
     ctx.closePath();
     ctx.fill();
+    ctx.restore();
 
     // Ghosts
     for (const ghost of ghosts) {

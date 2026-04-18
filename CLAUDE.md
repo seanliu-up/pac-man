@@ -46,6 +46,7 @@ npm run lint          # ESLint check
 
 ## Recent Changes
 
+- **003-pacman-facing-direction** (2026-04-18): Pac-Man sprite now rotates to face movement direction (UP/DOWN/LEFT/RIGHT); DIRECTION_ANGLE map + ctx transform in entity-renderer.js. [Source: specs/tiny/pacman-facing-direction.md]
 - **002-speed-controls** (2026-04-18): 5× default speed with 1–5 preset selector (number keys); HUD speed label; speed persisted in localStorage; StorageAdapter merge fix. [Source: specs/002-speed-controls]
 - **001-init-web-game** (2026-04-18): Core gameplay, ghost AI, scoring, high scores, level progression. 105 tests passing; 80%+ coverage.
 
