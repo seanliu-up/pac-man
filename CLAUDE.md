@@ -46,6 +46,7 @@ npm run lint          # ESLint check
 
 ## Recent Changes
 
+- **002-speed-controls** (2026-04-18): 5× default speed with 1–5 preset selector (number keys); HUD speed label; speed persisted in localStorage; StorageAdapter merge fix. [Source: specs/002-speed-controls]
 - **001-init-web-game** (2026-04-18): Core gameplay, ghost AI, scoring, high scores, level progression. 105 tests passing; 80%+ coverage.
 
 ## Known Issues & Gotchas
@@ -78,6 +79,13 @@ npm run lint          # ESLint check
 
 **Location**: `src/game/entities/pacman.js`, `src/input/input-manager.js`
 
+### ⚠️ Settings Storage Merge Pattern (added in 002-speed-controls)
+**Issue**: Adding a new settings field while calling an existing save method (e.g., `saveMuteSetting()`) can silently overwrite other settings fields.
+**Root Cause**: The original `saveMuteSetting` wrote `{ muted: !!muted }` — a single-field object that overwrites the entire `pacman.settings` key in localStorage.
+**Prevention Rule**: When adding new settings fields, always use the `_getSettings()` read-modify-write helper. Never write a single-field settings object directly.
+
+**Location**: `src/storage/storage.js`
+
 ## Constitution Compliance
 
 ✅ All 5 principles verified and enforced:
@@ -93,6 +101,5 @@ Read `.specify/memory/constitution.md` for the complete governance model.
 <!-- SPECKIT START -->
 ## Active Implementation Plan
 
-Current feature: **002-speed-controls**  
-Plan: `specs/002-speed-controls/plan.md`
+No active feature branch. 002-speed-controls has been merged and archived.
 <!-- SPECKIT END -->

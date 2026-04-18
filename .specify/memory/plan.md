@@ -1,6 +1,6 @@
 # Main Implementation Plan
 
-**Last Updated**: 2026-04-18 | **Version**: 1.0.0
+**Last Updated**: 2026-04-18 | **Version**: 1.1.0
 
 ## Project Overview
 
@@ -74,12 +74,13 @@ src/
 ├── audio/
 │   └── audio-manager.js     # Sound effect triggers (Web Audio API), mute toggle
 ├── storage/
-│   └── storage.js           # localStorage adapter for high scores and settings
-└── main.js                  # Entry point: init GameState + Renderer + InputManager
+│   └── storage.js           # localStorage adapter for high scores and settings; merge-safe _getSettings(); getSpeedSetting(); saveSpeedSetting()
+└── main.js                  # Entry point: init GameState + Renderer + InputManager (reads speed from storage)
 
 tests/
 ├── unit/                    # Pure game logic — no DOM/Canvas required
 ├── integration/             # Player-game-state interactions
+│   └── speed-controls.test.js  # US1/US2/US3 speed-preset scenarios [Source: specs/002-speed-controls]
 └── performance/             # Frame-budget assertions, input latency
 
 index.html                   # Single canvas element, one module script tag
@@ -120,7 +121,8 @@ package.json
 - Player-game-state interactions: movement → state → score
 - Collision sequences (dot eating, ghost contact, power pellet trigger)
 - High score persistence to localStorage
-- Test modules: game session flow, scoring flow, level flow
+- Speed preset selection, pause-menu speed change, and cross-session speed persistence [Source: specs/002-speed-controls]
+- Test modules: game session flow, scoring flow, level flow, speed controls
 
 ### Performance Tests (Playwright)
 - Input latency: keypress to visual response ≤33ms
@@ -196,12 +198,17 @@ Output: Single `dist/index.html` + bundled `dist/assets/*.js` and `dist/assets/*
 - Mitigation: Manual playthrough of affected gameplay paths required for visual changes
 - Pattern: Unit tests verify logic; integration tests verify state transitions; manual testing validates UX
 
+### Settings Storage Merge Pattern [Source: specs/002-speed-controls]
+- The original `saveMuteSetting` wrote `{ muted: !!muted }` — overwriting the entire settings key silently destroyed other fields
+- Mitigation: Private `_getSettings()` helper reads-then-merges; all `save*` methods must use this pattern
+- Pattern: When adding new settings fields to `pacman.settings`, always use `_getSettings()` merge — never write a single-field settings object directly
+
 ---
 
 ## Next Steps & Future Phases
 
 - **Phase 1 ✅**: Project setup, entities, US1 gameplay (completed)
-- **Phase 2**: Additional features (US2-US4: power pellets, scoring, level progression)
+- **Phase 2 ✅ (partial)**: Speed controls (002-speed-controls) — 5× default, 1–5 preset selector, HUD label, persistence (completed)
 - **Phase 3**: Polish & optimization (visual feedback, audio, mobile input)
 - **Phase 4**: Performance validation & deployment
 - **Phase 5+**: Potential future enhancements (out of v1 scope: fruit bonuses, custom mazes, online leaderboards)
@@ -213,3 +220,4 @@ Output: Single `dist/index.html` + bundled `dist/assets/*.js` and `dist/assets/*
 | Date | Version | Changes |
 |------|---------|---------|
 | 2026-04-18 | 1.0.0 | Initial implementation plan merged to master |
+| 2026-04-18 | 1.1.0 | Archived 002-speed-controls: project structure, testing strategy, known issues, next steps updated |

@@ -1,5 +1,38 @@
 # Merged Features Log
 
+## 002-speed-controls — 2026-04-18
+
+**Branch**: `002-speed-controls`
+**Spec**: `specs/002-speed-controls`
+**Status**: Verified | **Tasks**: 23/24 completed (T023 manual browser verification pending)
+
+### What was added
+
+- **Speed preset selector**: 5 discrete presets (1×–5×, default 5×) selectable via number keys 1–5 on start screen and pause menu
+- **HUD speed label**: Passive `SPD:N×` indicator displayed in the score/status area during gameplay
+- **GameState `speedMultiplier`**: Added to top-level state; applied at movement-compute time in `movement.js` so all entities (including frightened ghosts) scale uniformly
+- **Speed persistence**: Player's chosen speed preset persisted in `localStorage` under `pacman.settings.speedMultiplier`; restored on session load; falls back to 5× silently on read failure
+- **StorageAdapter merge fix**: Introduced `_getSettings()` read-modify-write helper; fixed `saveMuteSetting()` to no longer overwrite other settings fields
+
+### Modified Files
+
+- `src/storage/storage.js` — `_getSettings()`, `getSpeedSetting()`, `saveSpeedSetting()`, `saveMuteSetting()` merge fix
+- `src/game/state/game-state.js` — `speedMultiplier` parameter (default 5)
+- `src/game/systems/movement.js` — `distance *= state.speedMultiplier` in `tickPacMan` + `tickEntity`
+- `src/game/state/tick.js` — `_handleSpeedInput()` invoked from START + PAUSED phases
+- `src/rendering/ui-renderer.js` — `_drawSpeedRow()`, HUD speed label, `_drawStart` + `_drawPaused` extensions
+- `src/input/input-manager.js` — `_speedSelection` field, keys 1–5, `getSpeedSelection()`, `clearSpeedSelection()`
+- `src/main.js` — loads initial speed from storage, passes to `createGameState`
+
+### New Tests
+
+- `tests/integration/speed-controls.test.js` — US1/US2/US3 scenarios
+- Extended: `tests/unit/storage.test.js`, `tests/unit/movement.test.js`, `tests/unit/input-manager.test.js`, `tests/unit/game-state.test.js`
+
+### Tasks Completed: 23/24
+
+---
+
 ## 001-init-web-game — 2026-04-18
 
 **Branch**: `001-init-web-game`  

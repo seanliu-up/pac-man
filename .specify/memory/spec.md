@@ -1,6 +1,6 @@
 # Main Project Specification
 
-**Last Updated**: 2026-04-18 | **Version**: 1.0.0
+**Last Updated**: 2026-04-18 | **Version**: 1.1.0
 
 ## User Scenarios & Integration Scenarios
 
@@ -53,6 +53,43 @@ A player who clears all dots in the current level advances to the next level wit
 
 ---
 
+### US-005: Select Game Speed Before Playing (Priority: P1)
+**Branch**: `002-speed-controls` [Source: specs/002-speed-controls]
+
+A player wants to choose how fast the game runs before starting. They open the settings panel (accessible from the main menu), see the speed options, and select their preferred multiplier. The game then starts at the chosen speed.
+
+**Acceptance Criteria**:
+1. On the main menu, player sees a speed control with at least 5 options (1×, 2×, 3×, 4×, 5×) and the current selection is highlighted
+2. Player selects 1× → selection saved; next game runs at original speed
+3. Player selects 5× → selection saved; next game runs at 5× the original speed
+4. No prior preference saved → game runs at 5× the original speed by default
+
+---
+
+### US-006: Change Speed While Paused (Priority: P2)
+**Branch**: `002-speed-controls` [Source: specs/002-speed-controls]
+
+A player discovers mid-game that the current speed is too fast or too slow. They pause the game, adjust the speed setting, and resume. The new speed takes effect immediately upon resuming.
+
+**Acceptance Criteria**:
+1. Game is running → player pauses → speed control is accessible in the pause menu
+2. Pause menu is open → player changes speed → on resume all entities move at the newly selected speed
+3. Game is not paused → speed control is not accessible (prevents accidental mid-action changes)
+
+---
+
+### US-007: Speed Preference Persists Across Sessions (Priority: P3)
+**Branch**: `002-speed-controls` [Source: specs/002-speed-controls]
+
+A player who previously set their preferred speed returns to the game another day. Their speed preference is automatically restored so they don't need to reconfigure it.
+
+**Acceptance Criteria**:
+1. Player sets speed to 3× and closes browser → on return the game runs at 3× automatically
+2. No prior preference stored (first visit) → game starts at 5×
+3. Stored preference data unavailable or corrupted → game falls back to 5× without error
+
+---
+
 ## Functional Requirements
 
 - **FR-001**: Game MUST display classic Pac-Man maze with dots, power pellets, and ghost starting positions
@@ -68,6 +105,17 @@ A player who clears all dots in the current level advances to the next level wit
 - **FR-011**: Players MUST be able to pause and resume game at any time during play
 - **FR-012**: Game MUST play sound effects for eating dots, eating ghosts, losing a life, and level completion; sound on by default; players can mute/unmute at any time
 - **FR-013**: Game MUST award one extra life when player's score first reaches 10,000 points; only one bonus life awarded per game session
+- **FR-014**: The game MUST offer exactly 5 speed presets: 1× (original), 2×, 3×, 4×, and 5× the original base speed [Source: specs/002-speed-controls]
+- **FR-015**: The default speed preset MUST be 5×, applied automatically when no player preference has been saved [Source: specs/002-speed-controls]
+- **FR-016**: Players MUST be able to access and change the speed control from the main menu settings panel [Source: specs/002-speed-controls]
+- **FR-017**: Players MUST be able to access and change the speed control from the in-game pause menu [Source: specs/002-speed-controls]
+- **FR-018**: The speed multiplier MUST apply uniformly to all moving entities and all movement states (Pac-Man, normal ghosts, and frightened ghosts), preserving their relative speed ratios across all states [Source: specs/002-speed-controls]
+- **FR-019**: Speed changes made in the pause menu MUST take effect immediately when the game resumes [Source: specs/002-speed-controls]
+- **FR-020**: The currently active speed setting MUST be visually highlighted in the settings panel and pause menu so players can identify their selection at a glance [Source: specs/002-speed-controls]
+- **FR-021**: The active speed multiplier MUST be displayed as a passive label in the in-game HUD (score/status area) during gameplay — display only, no interaction [Source: specs/002-speed-controls]
+- **FR-022**: The player's chosen speed preference MUST be persisted and automatically restored in subsequent sessions [Source: specs/002-speed-controls]
+- **FR-023**: If the stored speed preference cannot be read, the game MUST silently fall back to the 5× default without displaying an error [Source: specs/002-speed-controls]
+- **FR-024**: The speed multiplier MUST scale proportionally with the per-level speed progression (the level system's relative increases are preserved on top of the global multiplier) [Source: specs/002-speed-controls]
 
 ---
 
@@ -80,6 +128,19 @@ A player who clears all dots in the current level advances to the next level wit
 - **Power Pellet**: Special collectible that temporarily makes ghosts vulnerable; has position and collected state
 - **Maze**: Game board defining walls, paths, dot positions, and ghost movement zones (28×31 tiles)
 - **High Score Entry**: Saved game record with player name, score, and date
+- **SpeedPreset**: A selectable speed option with a display label (e.g., "1×", "5×") and a numeric multiplier value (1–5) [Source: specs/002-speed-controls]
+- **SpeedSetting**: The player's persisted preference, stored alongside existing game settings (mute, etc.) and restored on load [Source: specs/002-speed-controls]
+
+---
+
+## Success Criteria (002-speed-controls additions)
+
+- **SC-007**: The game launches at 5× the original speed by default, without any player configuration, 100% of the time on a fresh install [Source: specs/002-speed-controls]
+- **SC-008**: Players can locate and change the speed setting in under 10 seconds from the main menu [Source: specs/002-speed-controls]
+- **SC-009**: Speed changes take effect within the same frame the game resumes — no perceptible delay after unpausing [Source: specs/002-speed-controls]
+- **SC-010**: A player's speed preference survives 100% of browser/tab close-and-reopen cycles on the same device [Source: specs/002-speed-controls]
+- **SC-011**: All moving entities respond proportionally to speed changes — at any preset, no entity moves faster or slower relative to others than it would at 1× [Source: specs/002-speed-controls]
+- **SC-012**: The game maintains its target frame rate at all 5 speed presets with no observable stuttering [Source: specs/002-speed-controls]
 
 ---
 
@@ -100,6 +161,10 @@ A player who clears all dots in the current level advances to the next level wit
 - Player holds two directional inputs simultaneously → last or most recent input wins; Pac-Man moves in one direction at a time
 - Very small screen sizes or mobile browsers → game displays with minimum playable size; layout adapts where possible
 - No high scores exist yet → high score screen shows empty/placeholder state with prompt to play
+- Player rapidly clicks through speed options → last selected value wins; intermediate values do not cause instability [Source: specs/002-speed-controls]
+- Level transition occurs while game is running at 5× → speed scaling carries through level transitions correctly, adjusting per-level base values proportionally [Source: specs/002-speed-controls]
+- Speed setting changed after high scores already exist → existing high scores are unaffected; speed setting does not alter the scoring system [Source: specs/002-speed-controls]
+- Frightened ghost speed at high multipliers → frightened ghost speed scales by the same multiplier as all other entities; uniform scaling applies to all movement states including frightened mode [Source: specs/002-speed-controls]
 
 ---
 
