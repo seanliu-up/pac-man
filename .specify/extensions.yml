@@ -21,7 +21,7 @@ hooks:
   - extension: tinyspec
     command: speckit.tinyspec.classify
     enabled: true
-    optional: true
+    optional: false
     prompt: Check if this task is small enough for the lightweight tinyspec workflow?
     description: Auto-classify task complexity before starting the full SDD workflow
     condition: null
@@ -110,7 +110,7 @@ hooks:
   - extension: speckit
     command: speckit.clarify
     enabled: true
-    optional: true
+    optional: false
     prompt: Run clarification after specification?
     description: Run clarify after specification
     condition: null
