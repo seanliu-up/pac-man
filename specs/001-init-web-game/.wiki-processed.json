@@ -1,0 +1,15 @@
+{
+  "processedAt": "2026-04-19T00:00:00Z",
+  "fileMtimes": {
+    "spec.md": 1776519043,
+    "plan.md": 1776519043,
+    "data-model.md": 1776519043,
+    "quickstart.md": 1776519043,
+    "research.md": 1776519043,
+    "tasks.md": 1776519043,
+    "checklists/requirements.md": 1776519043,
+    "contracts/storage.md": 1776519043,
+    "contracts/input.md": 1776519043
+  },
+  "wikiFile": "wiki/features/001-init-web-game.md"
+}
