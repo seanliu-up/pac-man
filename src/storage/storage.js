@@ -64,7 +64,7 @@ export class StorageAdapter {
   getSpeedSetting() {
     const val = this._getSettings().speedMultiplier;
     const n = parseInt(val, 10);
-    return (Number.isInteger(n) && n >= 1 && n <= 5) ? n : 5;
+    return (Number.isInteger(n) && n >= 1 && n <= 5) ? n : 1;
   }
 
   saveSpeedSetting(multiplier) {

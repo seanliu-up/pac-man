@@ -3,7 +3,7 @@ import { createPacMan } from '../entities/pacman.js';
 import { createGhost } from '../entities/ghost.js';
 import { createMaze } from '../entities/maze.js';
 
-export function createGameState(speedMultiplier = 5) {
+export function createGameState(speedMultiplier = 1) {
   return {
     speedMultiplier,
     phase: GamePhase.START,

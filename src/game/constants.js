@@ -43,3 +43,4 @@ export const TileType = Object.freeze({
 export const TILE_SIZE = 16;
 export const MAZE_COLS = 28;
 export const MAZE_ROWS = 31;
+export const SPEED_SCALE = 5;

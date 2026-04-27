@@ -1,9 +1,9 @@
 import { createGameState } from '../../src/game/state/game-state.js';
 
 describe('T004 — createGameState speedMultiplier', () => {
-  test('default speedMultiplier is 5', () => {
+  test('default speedMultiplier is 1', () => {
     const state = createGameState();
-    expect(state.speedMultiplier).toBe(5);
+    expect(state.speedMultiplier).toBe(1);
   });
 
   test('passed speedMultiplier overrides the default', () => {

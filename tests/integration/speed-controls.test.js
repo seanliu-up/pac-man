@@ -48,9 +48,9 @@ describe('US1 — speed selection on start screen (T008)', () => {
     expect(state.speedMultiplier).toBe(3);
   });
 
-  test('default speedMultiplier is 5', () => {
+  test('default speedMultiplier is 1', () => {
     const state = createGameState();
-    expect(state.speedMultiplier).toBe(5);
+    expect(state.speedMultiplier).toBe(1);
   });
 });
 
@@ -87,16 +87,16 @@ describe('US3 — speed preference persists across sessions (T019)', () => {
     expect(state.speedMultiplier).toBe(3);
   });
 
-  test('fresh-install default is 5×', () => {
+  test('fresh-install default is 1', () => {
     const storage = new StorageAdapter(makeStore());
     const state = createGameState(storage.getSpeedSetting());
-    expect(state.speedMultiplier).toBe(5);
+    expect(state.speedMultiplier).toBe(1);
   });
 
-  test('corrupt storage falls back to 5×', () => {
+  test('corrupt storage falls back to 1', () => {
     const store = makeStore({ 'pacman.settings': 'bad-json{' });
     const storage = new StorageAdapter(store);
     const state = createGameState(storage.getSpeedSetting());
-    expect(state.speedMultiplier).toBe(5);
+    expect(state.speedMultiplier).toBe(1);
   });
 });

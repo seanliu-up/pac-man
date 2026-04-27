@@ -62,7 +62,7 @@ describe('movement system', () => {
     state.pacman.tileX = 0;
     state.pacman.tileY = 13;
     state.pacman.direction = Direction.LEFT;
-    move.tickPacMan(state, 2);
+    move.tickPacMan(state, 0.3);
     expect(state.pacman.tileX).toBe(27);
   });
 });
@@ -85,20 +85,19 @@ describe('ghost movement', () => {
 describe('movement system — speed multiplier (T006)', () => {
   const move = createMovementSystem();
 
-  test('tickEntity multiplier=1 baseline: distance equals speed*dt', () => {
+  test('tickEntity multiplier=1 baseline: distance equals speed*dt*5', () => {
     const state = { maze: createMaze(), speedMultiplier: 1 };
     const ghost = { tileX: 6, tileY: 1, direction: Direction.RIGHT, speed: 0.75, pixelX: 0, pixelY: 0 };
     move.tickEntity(state, ghost, 0.1);
-    // 0.75 * 0.1 * 1 = 0.075 — no tile crossing, stays in pixelX
-    expect(ghost.pixelX).toBeCloseTo(0.075);
+    expect(ghost.pixelX).toBeCloseTo(0.375);
   });
 
-  test('tickEntity multiplier=5: pixelX is 5× the baseline', () => {
+  test('tickEntity multiplier=5: crosses tile, remainder is 5× baseline minus 1', () => {
     const state = { maze: createMaze(), speedMultiplier: 5 };
     const ghost = { tileX: 6, tileY: 1, direction: Direction.RIGHT, speed: 0.75, pixelX: 0, pixelY: 0 };
     move.tickEntity(state, ghost, 0.1);
-    // 0.75 * 0.1 * 5 = 0.375 — no tile crossing
-    expect(ghost.pixelX).toBeCloseTo(0.375);
+    expect(ghost.tileX).toBe(7);
+    expect(ghost.pixelX).toBeCloseTo(0.875);
   });
 
   test('tickPacMan multiplier=2 stacks with per-level entity speed (level-stack)', () => {
@@ -107,16 +106,14 @@ describe('movement system — speed multiplier (T006)', () => {
     pacman.speed = 1.0; // simulate level-adjusted speed
     pacman.direction = Direction.RIGHT;
     const state = { maze, pacman, speedMultiplier: 2 };
-    move.tickPacMan(state, 0.1);
-    // 1.0 * 0.1 * 2 = 0.2 — no tile crossing
-    expect(pacman.pixelX).toBeCloseTo(0.2);
+    move.tickPacMan(state, 0.05);
+    expect(pacman.pixelX).toBeCloseTo(0.5);
   });
 
-  test('tickEntity with undefined speedMultiplier falls back to ×1', () => {
+  test('tickEntity with undefined speedMultiplier falls back to ×1 preset (×5 actual)', () => {
     const state = { maze: createMaze() }; // no speedMultiplier field
     const ghost = { tileX: 6, tileY: 1, direction: Direction.RIGHT, speed: 0.75, pixelX: 0, pixelY: 0 };
     move.tickEntity(state, ghost, 0.1);
-    // fallback to 1: 0.75 * 0.1 * 1 = 0.075
-    expect(ghost.pixelX).toBeCloseTo(0.075);
+    expect(ghost.pixelX).toBeCloseTo(0.375);
   });
 });
