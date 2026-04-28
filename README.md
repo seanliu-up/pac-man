@@ -53,6 +53,22 @@ Without it, `specify extension add <name>` cannot discover community extensions.
 | `superb` | Bridges superpowers quality-control skills (TDD gate, verify, review) into Speckit |
 | `brownfield` | Bootstraps Speckit for existing codebases — auto-discovers tech stack and conventions |
 
+### Superpowers Bridge (superb) — skill symlink hack
+
+The `superb` extension resolves superpowers skills from `.agents/skills/` in the project root (or `~/.agents/skills/` globally). However, Claude Code's superpowers plugin caches its skills at:
+
+```
+~/.claude/plugins/cache/claude-plugins-official/superpowers/<version>/skills/
+```
+
+These two locations don't match, so `superb` can't find the skills unless you bridge them with symbolic links. Give Claude this prompt to set them up:
+
+> Find the installed superpowers plugin version under `~/.claude/plugins/cache/claude-plugins-official/superpowers/`, then create `.agents/skills/` in the project root and symlink all skills from that cache into it.
+
+The version path will change when superpowers updates — re-run the prompt when that happens.
+
+`.agents/` is gitignored (symlinks point to a machine-local cache path that differs per developer).
+
 ### Manually added hooks in `extensions.yml`
 
 Three hook entries were added by hand — they are not provided by any installable extension:
