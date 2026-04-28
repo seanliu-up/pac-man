@@ -18,6 +18,8 @@ A browser-based Pac-Man clone built entirely through **spec-driven development**
 
 Speckit guided every step: constitution → spec → plan → tasks → implementation → archive.
 
+The repo also includes two wiki-generation skills: **[spec-wiki-builder and spec-wiki-optimizer](docs/spec-wiki-skills.md)** — Claude Code skills that turn the `specs/` folder into a browsable, consolidated wiki.
+
 ---
 
 ## Tech stack
