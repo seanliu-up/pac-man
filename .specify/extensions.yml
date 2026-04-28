@@ -178,9 +178,9 @@ hooks:
     enabled: true
     optional: true
     prompt: Simpilify this implementation?
-    description: 'Run Claude simplify command after implementation to clean up code, improve readability,
-      and ensure clarity of intent. This can help catch any areas of the code that may be more complex
-      than necessary and benefit from simplification.
+    description: 'Run Claude simplify command after implementation to clean up code,
+      improve readability, and ensure clarity of intent. This can help catch any areas
+      of the code that may be more complex than necessary and benefit from simplification.
 
       '
     condition: null
