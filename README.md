@@ -49,17 +49,19 @@ Without it, `specify extension add <name>` cannot discover community extensions.
            │
    before: tinyspec.classify
            │
-        [specify] ────────────────────── after: clarify
-           │
-        [clarify]
-           │
-         [plan] ──────────────────────── after: (checklist)
-           │
-        [tasks] ──────────────────────── after: (superb.review)
-           │
-   before: superb.tdd
-           │
-      [implement] ──────────────────────  after: superb.verify · (simplify)
+     ┌─────┴─────────────────────────────────────────────────────┐
+     │ small                                                full │
+     │                                                           │
+ [tinyspec] ── tinyspec.implement                           [specify] ── after: clarify
+     │                    │                                      │
+     └────────────────────┘                                      │ 
+                          │                                  [plan] ── after: (checklist)
+                          │                                      │
+                          │                                 [tasks] ── after: (superb.review)
+                          │                                      │
+                          │                            before: superb.tdd
+                          │                                      │
+                          └──────────────────────────── [implement] ── after: superb.verify · (simplify)
 ```
 
 `(parentheses)` = optional hook.
