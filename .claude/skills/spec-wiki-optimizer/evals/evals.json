@@ -1,0 +1,23 @@
+{
+  "skill_name": "spec-wiki-optimizer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a spec wiki at /Users/sean/projects/speckit-companion/wiki/ with 69 feature pages. I know some of them are fixes or improvements to earlier features — for example 029-fix-step-highlight is probably related to 006-plan-step-highlight. Can you run the spec wiki optimizer to find all these groups and create merged pages for them? Work on a COPY of the wiki at /tmp/spec-wiki-test-1/ so you don't touch the real one. Copy wiki/ there first, then run the optimizer.",
+      "expected_output": "wiki/merged/ directory with multiple merged .md files, each combining an original feature with its related fixes/improvements. wiki/index.md updated with Merged Views section.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "My spec wiki at /Users/sean/projects/speckit-companion/wiki/ is getting hard to navigate because there are dozens of tiny fix specs scattered around. Use the spec wiki optimizer to group related specs and produce merged pages. Pay special attention to the badge/context chain (context-driven-badges, fix-badge-status-display, fix-status-inference) and the list rendering group (fix-bullet-rendering, fix-list-spacing). Work on a COPY at /tmp/spec-wiki-test-2/.",
+      "expected_output": "wiki/merged/ with merged pages for the badge chain and list rendering group among others. The badge merged page should reference all 3 related specs. wiki/index.md updated.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "optimize my spec wiki — find specs that are improvements or fixes to earlier ones and merge them. The wiki is at /Users/sean/projects/speckit-companion/wiki/. Work on a copy at /tmp/spec-wiki-test-3/ so the original is not modified.",
+      "expected_output": "wiki/merged/ populated with merged views, wiki/index.md updated with Merged Views section, summary of groups found printed to console.",
+      "files": []
+    }
+  ]
+}
