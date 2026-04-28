@@ -1,6 +1,6 @@
 # Spec Wiki
 
-> Last updated: 2026-04-19 · 3 features across 2 categories
+> Last updated: 2026-04-28 · 3 features across 2 categories
 
 ---
 
@@ -8,7 +8,7 @@
 
 - [Pac-Man Web Game](features/001-init-web-game.md)
 
-## Player Experience (2)
+## Player Experience (3)
 
-- [Game Speed Controls](features/002-speed-controls.md)
-- [Pac-Man Facing Direction](features/tiny.md)
+- [Game Speed Controls](features/merged/002-speed-controls.md)
+- [TinySpec: Pac-Man Facing Direction](features/tiny--pacman-facing-direction.md)

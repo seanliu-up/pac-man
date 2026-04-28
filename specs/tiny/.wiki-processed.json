@@ -1,7 +1,15 @@
 {
-  "processedAt": "2026-04-19T00:00:00Z",
+  "type": "simple",
+  "processedAt": "2026-04-27T00:00:00Z",
   "fileMtimes": {
-    "pacman-facing-direction.md": 1776519615
+    "pacman-facing-direction.md": 1776519615,
+    "speed-5x-1x-default.md": 1777256117
   },
-  "wikiFile": "wiki/features/tiny.md"
+  "wikiFiles": [
+    "wiki/features/tiny--pacman-facing-direction.md",
+    "wiki/features/tiny--speed-5x-1x-default.md"
+  ],
+  "mergedInto": {
+    "speed-5x-1x-default.md": "wiki/features/merged/002-speed-controls.md"
+  }
 }

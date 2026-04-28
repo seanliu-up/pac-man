@@ -9,5 +9,6 @@
     "tasks.md": 1776519043,
     "checklists/requirements.md": 1776519043
   },
-  "wikiFile": "wiki/features/002-speed-controls.md"
+  "wikiFile": "wiki/features/002-speed-controls.md",
+  "mergedInto": "wiki/features/merged/002-speed-controls.md"
 }
